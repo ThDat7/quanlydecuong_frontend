@@ -1,7 +1,10 @@
+import { Alert } from 'react-bootstrap'
 const Header = () => {
   return (
     <>
-      <div>Header</div>
+      <Alert variant='success' className='mt-5'>
+        Header
+      </Alert>
     </>
   )
 }

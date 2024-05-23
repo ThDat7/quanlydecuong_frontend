@@ -1,11 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Container } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Home from './components/Home'
 import RichTextExample from './components/RichTextExample'
 import Footer from './layout/Footer'
 import Header from './layout/Header'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Container } from 'react-bootstrap'
+import AssignOutlines from './components/AssignOutlines'
 import ShowCKEdtior from './components/ShowCKEditor'
+import CourseOutlineDetail from './components/CourseOutlineDetail'
 
 const App = () => {
   return (
@@ -23,6 +25,12 @@ const App = () => {
                 />
               }
             />
+            <Route path='/assign-outlines' element={<AssignOutlines />} />
+            <Route
+              path='/course-outlines/:assignId'
+              element={<CourseOutlineDetail />}
+            />
+
             <Route path='/home' element={<Home />} />
           </Routes>
         </Container>

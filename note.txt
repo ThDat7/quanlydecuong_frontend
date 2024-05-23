@@ -3,3 +3,16 @@ https://github.com/duonghuuthanh/CS2001SpringSaleApp/commit/89eb8ff2107590fbf865
 
 submit front end:
 https://github.com/duonghuuthanh/CS2001SpringSaleApp/commit/4db6d0f5375e0e0b700784d814014ebf9d427196#diff-72143811a0ce3b2f95148e7e2839bc6b12908e7e550455bf132fe22453a50acb
+
+user page:
+request account
+login
+info account
+search de cuong, hoac nganh
+chi tiet nganh (ctdt)
+chi tiet de cuong
+
+
+teacher page:
+quan ly phan cong
+chi tiet de cuong
