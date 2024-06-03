@@ -1,3 +1,4 @@
+import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -5,9 +6,15 @@ import Home from './components/Home'
 import RichTextExample from './components/RichTextExample'
 import Footer from './layout/Footer'
 import Header from './layout/Header'
-import AssignOutlines from './components/AssignOutlines'
+import AssignOutlines from './components/CourseOutlines'
 import ShowCKEdtior from './components/ShowCKEditor'
-import CourseOutlineDetail from './components/CourseOutlineDetail'
+import SearchResult from './components/SearchResult'
+import CourseOutlineEdit from './components/CourseOutlineEdit'
+import CourseOutlineView from './components/CourseOutlineView'
+import EducationPrograms from './components/EducationPrograms'
+import Urls from './configs/Urls'
+import Template from './components/template'
+import CourseOutlines from './components/CourseOutlines'
 
 const App = () => {
   return (
@@ -16,7 +23,6 @@ const App = () => {
         <Header />
         <Container>
           <Routes>
-            <Route path='/' element={<RichTextExample />} />
             <Route
               path='/s'
               element={
@@ -25,13 +31,24 @@ const App = () => {
                 />
               }
             />
-            <Route path='/assign-outlines' element={<AssignOutlines />} />
             <Route
-              path='/course-outlines/:assignId'
-              element={<CourseOutlineDetail />}
+              path={Urls['course-outlines']}
+              element={<CourseOutlines />}
             />
-
-            <Route path='/home' element={<Home />} />
+            <Route
+              path={`${Urls['course-outline-edit']}:assignId`}
+              element={<CourseOutlineEdit />}
+            />
+            <Route path={Urls['home']} element={<Home />} />
+            <Route path={Urls['search-result']} element={<SearchResult />} />
+            <Route
+              path={Urls['course-outline-view']}
+              element={<CourseOutlineView />}
+            />
+            <Route
+              path={`${Urls['education-programs']}:majorId/:year`}
+              element={<EducationPrograms />}
+            />
           </Routes>
         </Container>
         <Footer />

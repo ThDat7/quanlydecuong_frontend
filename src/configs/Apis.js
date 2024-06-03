@@ -3,7 +3,7 @@ import axios from 'axios'
 const SERVER_CONTEXT = '/QuanLyDeCuong'
 
 export const endpoints = {
-  'assign-outlines': `/api/assign-outlines`,
+  'course-outlines': `/api/course-outlines`,
   'course-outline': (id) => `/api/course-outlines/${id}`,
   'update-course-outline': (id) => `/api/course-outlines/${id}`,
 }
