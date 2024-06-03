@@ -42,13 +42,14 @@ const App = () => {
             <Route path={Urls['home']} element={<Home />} />
             <Route path={Urls['search-result']} element={<SearchResult />} />
             <Route
-              path={Urls['course-outline-view']}
+              path={`${Urls['course-outline-view']}:id`}
               element={<CourseOutlineView />}
             />
             <Route
-              path={`${Urls['education-programs']}:majorId/:year`}
+              path={`${Urls['education-programs']}:id`}
               element={<EducationPrograms />}
             />
+            <Route path={`${Urls['search']}`} element={<SearchResult />} />
           </Routes>
         </Container>
         <Footer />

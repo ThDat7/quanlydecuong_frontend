@@ -5,4 +5,5 @@ export default {
   'search-result': '/search/',
   'course-outline-view': '/course-outlines/view/',
   'education-programs': '/education-programs/',
+  search: '/search/',
 }

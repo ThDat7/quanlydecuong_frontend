@@ -3,18 +3,17 @@ import { Table } from 'react-bootstrap'
 import Pagination from 'react-bootstrap/Pagination'
 import Apis, { endpoints } from '../configs/Apis'
 import Urls from '../configs/Urls'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import Page from './Pagination'
 
 const CourseOutlines = () => {
   const [assigns, setAssigns] = useState([])
   const [total, setTotal] = useState(0)
 
-  const totalPage = Math.ceil(total / 10)
   const [searchParam] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(
-    parseInt(searchParam.get('page'))
+    parseInt(searchParam.get('page') || 1)
   )
-  if (!currentPage) setCurrentPage(1)
 
   useEffect(() => {
     const fetchAssigns = async () => {
@@ -59,19 +58,11 @@ const CourseOutlines = () => {
         </tbody>
       </Table>
 
-      {totalPage > 1 && (
-        <Pagination>
-          {[...Array(totalPage)].map((_, i) => (
-            <Pagination.Item
-              key={i}
-              active={i + 1 === currentPage}
-              onClick={() => setCurrentPage(i + 1)}
-            >
-              {i + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
-      )}
+      <Page
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        total={total}
+      />
     </>
   )
 }

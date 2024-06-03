@@ -6,6 +6,7 @@ export const endpoints = {
   'course-outlines': `/api/course-outlines`,
   'course-outline': (id) => `/api/course-outlines/${id}`,
   'update-course-outline': (id) => `/api/course-outlines/${id}`,
+  search: `/api/search`,
 }
 
 export default axios.create({

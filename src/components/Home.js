@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import Apis, { endpoints } from '../configs/Apis'
+import Search from './Search'
 
 const Home = () => {
-  return <>Home</>
+  return (
+    <>
+      <Search />
+    </>
+  )
 }
 
 export default Home
