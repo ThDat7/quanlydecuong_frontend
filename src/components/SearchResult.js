@@ -68,7 +68,7 @@ const SearchResult = () => {
           <div>
             <h2>Chương trình đào tạo</h2>
             {educationPrograms.map((_) => (
-              <Link key={_.id} to={`${Urls['education-programs']}${_.id}`}>
+              <Link key={_.id} to={`${Urls['education-program-view']}${_.id}`}>
                 <div className='border p-3'>
                   <p className='m-0'>{_.majorName}</p>
                   <p className='m-0'>Khóa {_.schoolYear}</p>

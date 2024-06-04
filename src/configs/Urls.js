@@ -4,6 +4,6 @@ export default {
   'course-outline-edit': '/course-outlines/edit/',
   'search-result': '/search/',
   'course-outline-view': '/course-outlines/view/',
-  'education-programs': '/education-programs/',
+  'education-program-view': '/education-programs/view/',
   search: '/search/',
 }

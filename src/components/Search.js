@@ -98,7 +98,7 @@ const Search = () => {
                   </div>
                 )}
                 {educationProgramSuggestion.map((_) => {
-                  let url = `${Urls['education-programs']}${_.id}`
+                  let url = `${Urls['education-program-view']}${_.id}`
                   return (
                     <React.Fragment key={_.id}>
                       <div>

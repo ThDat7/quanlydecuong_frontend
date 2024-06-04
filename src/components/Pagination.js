@@ -1,7 +1,6 @@
 import Pagination from 'react-bootstrap/Pagination'
 
 const Page = ({ currentPage, setCurrentPage, total, pageSize = 10 }) => {
-  console.log(total)
   const totalPage = Math.ceil(total / pageSize)
 
   return (

@@ -36,7 +36,7 @@ const App = () => {
               element={<CourseOutlines />}
             />
             <Route
-              path={`${Urls['course-outline-edit']}:assignId`}
+              path={`${Urls['course-outline-edit']}:id`}
               element={<CourseOutlineEdit />}
             />
             <Route path={Urls['home']} element={<Home />} />
@@ -46,7 +46,7 @@ const App = () => {
               element={<CourseOutlineView />}
             />
             <Route
-              path={`${Urls['education-programs']}:id`}
+              path={`${Urls['education-program-view']}:id`}
               element={<EducationPrograms />}
             />
             <Route path={`${Urls['search']}`} element={<SearchResult />} />

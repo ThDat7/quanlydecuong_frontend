@@ -8,7 +8,7 @@ import Urls from '../configs/Urls'
 
 const CourseOutlineEdit = () => {
   const [courseOutline, setcourseOutline] = useState(null)
-  const { assignId } = useParams()
+  const { id } = useParams()
   const [richTextContent, setRichTextContent] = useState('')
   const [status, setStatus] = useState('')
   const [courseAssessments, setCourseAssessments] = useState([])
@@ -39,7 +39,7 @@ const CourseOutlineEdit = () => {
 
   useEffect(() => {
     const fetchCourseOutline = async () => {
-      const res = await Apis.get(endpoints['course-outline'](assignId))
+      const res = await Apis.get(endpoints['course-outline'](id))
       setcourseOutline(res.data)
       setRichTextContent(res.data.content)
       setStatus(res.data.status)
@@ -47,7 +47,7 @@ const CourseOutlineEdit = () => {
     }
 
     fetchCourseOutline()
-  }, [assignId])
+  }, [id])
 
   async function handleSubmit() {
     const data = {
@@ -58,7 +58,7 @@ const CourseOutlineEdit = () => {
     const id = courseOutline.id
     try {
       await Apis.post(endpoints['update-course-outline'](id), data)
-      nav(Urls['assign-outlines'])
+      nav(Urls['course-outlines'])
     } catch (error) {
       console.log('Error: ' + error)
     }
