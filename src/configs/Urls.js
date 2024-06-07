@@ -1,4 +1,4 @@
-export default {
+const Urls = {
   home: '/',
   'course-outlines': '/course-outlines/',
   'course-outline-edit': '/course-outlines/edit/',
@@ -6,4 +6,11 @@ export default {
   'course-outline-view': '/course-outlines/view/',
   'education-program-view': '/education-programs/view/',
   search: '/search/',
+  register: '/register/',
+  'additional-info': '/additional-info/',
+  login: '/login/',
+  profile: '/profile/',
+  forbidden: '/forbidden/',
 }
+
+export default Urls
