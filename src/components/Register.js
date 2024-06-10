@@ -44,14 +44,14 @@ const Register = () => {
 
 const StudentRegister = ({ majors }) => {
   const nav = useNavigate()
-  const [form, setForm] = useState({
+  const initForm = {
     lastName: '',
     firstName: '',
     email: '',
     studentCode: '',
     majorId: null,
     schoolYear: '',
-  })
+  }
   const formFields = [
     {
       label: 'Họ',
@@ -86,15 +86,9 @@ const StudentRegister = ({ majors }) => {
     },
   ]
 
-  function handleInputChange(type, field, value) {
-    const newForm = { ...form }
-    newForm[field] = value
-    setForm(newForm)
-  }
-
-  async function handleSubmit() {
+  async function handleSubmit(data) {
     try {
-      await Apis.post(endpoints['student-register'], form)
+      await Apis.post(endpoints['student-register'], data)
       nav('/')
     } catch (e) {
       console.error('Register error: ' + e)
@@ -104,38 +98,11 @@ const StudentRegister = ({ majors }) => {
   return (
     <div>
       <h3 className='text-center'>Đăng ký học sinh</h3>
-      {formFields.map((_, i) => (
-        <div key={i}>
-          {_.type === 'select' ? (
-            <Form.Select
-              className='mb-3'
-              onChange={(e) =>
-                handleInputChange(_.type, _.field, e.target.value)
-              }
-              value={form[_.field] ? form[_.field] : ''}
-            >
-              {_.options.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.name}
-                </option>
-              ))}
-            </Form.Select>
-          ) : (
-            <Form.Control
-              className='mb-3'
-              type={_.type}
-              placeholder={_.label}
-              value={form[_.field]}
-              onChange={(e) =>
-                handleInputChange(_.type, _.field, e.target.value)
-              }
-            />
-          )}
-        </div>
-      ))}
-      <Button variant='success' onClick={handleSubmit}>
-        Lưu
-      </Button>
+      <BaseForm
+        formFields={formFields}
+        initForm={initForm}
+        handleSubmit={handleSubmit}
+      />
     </div>
   )
 }
@@ -150,15 +117,11 @@ const TeacherRegister = ({ majors }) => {
     majorId: null,
     phone: '',
   }
+
   const nav = useNavigate()
 
-  async function handleSubmit(form, avatar) {
+  async function handleSubmit(data) {
     try {
-      let data = new FormData()
-      for (let key in form) data.append(key, form[key])
-
-      if (avatar) data.append('avatar', avatar)
-
       await Apis.post(endpoints['teacher-register'], data, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -182,7 +145,7 @@ const TeacherRegister = ({ majors }) => {
   )
 }
 
-const TeacherForm = ({ initForm, handleSubmit, majors }) => {
+const BaseForm = ({ formFields, initForm, handleSubmit }) => {
   const oldAvatar = initForm.image
   delete initForm.avatar
   const [form, setForm] = useState(initForm)
@@ -194,6 +157,77 @@ const TeacherForm = ({ initForm, handleSubmit, majors }) => {
     ? oldAvatar
     : null
 
+  function handleInputChange(type, field, value) {
+    const newForm = { ...form }
+    newForm[field] = value
+    setForm(newForm)
+  }
+
+  const handleSaveButtonClick = async () => {
+    let data = new FormData()
+    for (let key in form) data.append(key, form[key])
+
+    if (formFields.some((_) => _.field === 'avatar') && avatar)
+      data.append('avatar', avatar)
+
+    await handleSubmit(data)
+  }
+
+  return (
+    <>
+      {formFields.map((_, i) => (
+        <div key={i}>
+          {_.type === 'select' ? (
+            <Form.Select
+              className='mb-3'
+              onChange={(e) =>
+                handleInputChange(_.type, _.field, e.target.value)
+              }
+              disabled={initForm[_.field] != null}
+              value={form[_.field] ? form[_.field] : ''}
+            >
+              {_.options.map((o) => (
+                <option key={o.id} value={o.id}>
+                  {o.name}
+                </option>
+              ))}
+            </Form.Select>
+          ) : (
+            <Form.Control
+              className='mb-3'
+              type={_.type}
+              placeholder={_.label}
+              value={form[_.field]}
+              onChange={(e) =>
+                handleInputChange(_.type, _.field, e.target.value)
+              }
+            />
+          )}
+        </div>
+      ))}
+      {formFields.some((_) => _.field === 'avatar') && (
+        <Form.Control
+          className='mb-3'
+          type='file'
+          accept='.png,.jpg'
+          onChange={(e) => setAvatar(e.target.files[0])}
+        />
+      )}
+      {displayAvatar != null && (
+        <Image
+          className='mb-3'
+          style={{ maxHeight: '40vh', display: 'block' }}
+          src={displayAvatar}
+        />
+      )}
+      <Button variant='success' onClick={handleSaveButtonClick}>
+        Lưu
+      </Button>
+    </>
+  )
+}
+
+const TeacherForm = ({ initForm, handleSubmit, majors }) => {
   const formFields = [
     {
       label: 'Họ',
@@ -231,71 +265,20 @@ const TeacherForm = ({ initForm, handleSubmit, majors }) => {
       field: 'phone',
       type: 'text',
     },
+    {
+      field: 'avatar',
+    },
   ]
 
-  function handleInputChange(type, field, value) {
-    const newForm = { ...form }
-    newForm[field] = value
-    setForm(newForm)
-  }
-
   return (
-    <>
-      {formFields.map((_, i) => (
-        <div key={i}>
-          {_.type === 'select' ? (
-            <Form.Select
-              className='mb-3'
-              onChange={(e) =>
-                handleInputChange(_.type, _.field, e.target.value)
-              }
-              disabled={initForm[_.field] != null}
-              value={form[_.field] ? form[_.field] : ''}
-            >
-              {_.options.map((o) => (
-                <option key={o.id} value={o.id}>
-                  {o.name}
-                </option>
-              ))}
-            </Form.Select>
-          ) : (
-            <Form.Control
-              className='mb-3'
-              type={_.type}
-              placeholder={_.label}
-              value={form[_.field]}
-              onChange={(e) =>
-                handleInputChange(_.type, _.field, e.target.value)
-              }
-            />
-          )}
-        </div>
-      ))}
-      <Form.Control
-        className='mb-3'
-        type='file'
-        accept='.png,.jpg'
-        onChange={(e) => setAvatar(e.target.files[0])}
-      />
-      {displayAvatar != null && (
-        <Image
-          className='mb-3'
-          style={{ maxHeight: '40vh', display: 'block' }}
-          src={displayAvatar}
-        />
-      )}
-      <Button
-        variant='success'
-        onClick={() => {
-          handleSubmit(form, avatar)
-        }}
-      >
-        Lưu
-      </Button>
-    </>
+    <BaseForm
+      formFields={formFields}
+      initForm={initForm}
+      handleSubmit={handleSubmit}
+    />
   )
 }
 
-export { TeacherForm }
+export { TeacherForm, BaseForm }
 
 export default Register

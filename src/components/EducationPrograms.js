@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Apis, { endpoints } from '../configs/Apis'
+import Apis, { authApis, endpoints } from '../configs/Apis'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Col, Container, Row } from 'react-bootstrap'
 
@@ -29,8 +29,12 @@ const EducationPrograms = () => {
 
   useEffect(() => {
     const fetchEducationProgram = async () => {
-      const res = await Apis.get(endpoints['education-program-view'](id))
-      setEducationProgram(res.data)
+      try {
+        const res = await authApis.get(endpoints['education-program-view'](id))
+        setEducationProgram(res.data)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     fetchEducationProgram()

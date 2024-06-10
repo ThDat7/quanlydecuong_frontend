@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { TeacherForm } from './Register'
+import { BaseForm, TeacherForm } from './Register'
 import { useNavigate } from 'react-router'
 import Apis, { authApis, endpoints } from '../configs/Apis'
 import UserContext from '../contexts/UserContext'
@@ -26,7 +26,7 @@ const Profile = () => {
       {majors.length > 0 && (
         <>
           {currentUserRole === 'TEACHER' && <TeacherProfile majors={majors} />}
-          {currentUserRole === 'STUDENT' && <StudentProfile />}
+          {currentUserRole === 'STUDENT' && <StudentProfile majors={majors} />}
         </>
       )}
     </>
@@ -49,13 +49,8 @@ const TeacherProfile = ({ majors }) => {
     fetchInfo()
   }, [])
 
-  async function handleSubmit(form, avatar) {
+  async function handleSubmit(data) {
     try {
-      let data = new FormData()
-      for (let key in form) data.append(key, form[key])
-
-      if (avatar) data.append('avatar', avatar)
-
       await authApis.post(endpoints['teacher-profile'], data, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -83,8 +78,101 @@ const TeacherProfile = ({ majors }) => {
   )
 }
 
-const StudentProfile = () => {
-  return <div>Student Profile</div>
+const StudentProfile = ({ majors }) => {
+  const nav = useNavigate()
+  const [studentInfo, setStudentInfo] = useState(null)
+
+  useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        const res = await authApis.get(endpoints[''])
+        setStudentInfo(res.data)
+      } catch (e) {
+        console.error('Fetch student info error: ' + e)
+      }
+    }
+    fetchInfo()
+  }, [])
+
+  async function handleSubmit(data) {
+    try {
+      await authApis.post(endpoints[''], data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      nav('/')
+    } catch (e) {
+      console.error('Register error: ' + e)
+    }
+  }
+
+  const formFields = [
+    {
+      label: 'Họ',
+      field: 'lastName',
+      type: 'text',
+    },
+    {
+      label: 'Tên',
+      field: 'firstName',
+      type: 'text',
+    },
+    {
+      label: 'Username',
+      field: 'username',
+      type: 'text',
+    },
+    {
+      label: 'Mật khẩu',
+      field: 'password',
+      type: 'password',
+    },
+    {
+      label: 'Niên khóa',
+      field: 'schoolYear',
+      type: 'number',
+    },
+    {
+      label: 'Mã số sinh viên',
+      field: 'studentCode',
+      type: 'text',
+    },
+    {
+      label: 'Email',
+      field: 'email',
+      type: 'text',
+    },
+    {
+      label: 'Chuyên ngành',
+      field: 'majorId',
+      type: 'select',
+      options: majors,
+    },
+    {
+      label: 'Số điện thoại',
+      field: 'phone',
+      type: 'text',
+    },
+    {
+      field: 'avatar',
+    },
+  ]
+
+  return (
+    <div>
+      {studentInfo && (
+        <>
+          <h3 className='text-center'>Thông tin cá nhân</h3>
+          <BaseForm
+            formFields={formFields}
+            initForm={studentInfo}
+            handleSubmit={handleSubmit}
+          />
+        </>
+      )}
+    </div>
+  )
 }
 
 export default Profile

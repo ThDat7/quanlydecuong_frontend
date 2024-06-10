@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Apis, { authApis, endpoints } from '../configs/Apis'
 import { useNavigate } from 'react-router'
 import { TeacherForm } from './Register'
 import { Button, Form, Image } from 'react-bootstrap'
+import UserContext from '../contexts/UserContext'
 
 const AdditionalInfo = () => {
-  const currentUserRole = 'teacher'
+  const [user] = useContext(UserContext)
+  const currentUserRole = user.role
 
   const [majors, setMajors] = useState([])
   useEffect(() => {
@@ -38,6 +40,44 @@ const AdditionalInfo = () => {
 const TeacherAdditionalInfo = ({ majors }) => {
   const nav = useNavigate()
   const [teacherInfo, setTeacherInfo] = useState(null)
+  const formFields = [
+    {
+      label: 'Họ',
+      field: 'lastName',
+      type: 'text',
+    },
+    {
+      label: 'Tên',
+      field: 'firstName',
+      type: 'text',
+    },
+    {
+      label: 'Username',
+      field: 'username',
+      type: 'text',
+    },
+    {
+      label: 'Mật khẩu',
+      field: 'password',
+      type: 'password',
+    },
+    {
+      label: 'Email',
+      field: 'email',
+      type: 'text',
+    },
+    {
+      label: 'Chuyên ngành',
+      field: 'majorId',
+      type: 'select',
+      options: majors,
+    },
+    {
+      label: 'Số điện thoại',
+      field: 'phone',
+      type: 'text',
+    },
+  ]
 
   useEffect(() => {
     const fetchInfo = async () => {
@@ -51,13 +91,8 @@ const TeacherAdditionalInfo = ({ majors }) => {
     fetchInfo()
   }, [])
 
-  async function handleSubmit(form, avatar) {
+  async function handleSubmit(data) {
     try {
-      let data = new FormData()
-      for (let key in form) data.append(key, form[key])
-
-      if (avatar) data.append('avatar', avatar)
-
       await authApis.post(endpoints['teacher-add-info'], data, {
         headers: {
           'Content-Type': 'multipart/form-data',

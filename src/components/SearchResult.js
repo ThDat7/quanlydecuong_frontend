@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import Search from './Search'
 import Urls from '../configs/Urls'
-import Apis, { endpoints } from '../configs/Apis'
+import Apis, { authApis, endpoints } from '../configs/Apis'
 import Page from './Pagination'
 
 const SearchResult = () => {
@@ -24,16 +24,20 @@ const SearchResult = () => {
 
   useEffect(() => {
     const fetchAssigns = async () => {
-      const res = await Apis.get(
-        `${endpoints['search']}?kw=${kw}&page=${currentPage}`
-      )
-      setCourseOutlines(res.data[0].data)
-      setEducationPrograms(res.data[1].data)
-      setTotal(
-        res.data[0].total > res.data[1].total
-          ? res.data[0].total
-          : res.data[1].total
-      )
+      try {
+        const res = await authApis.get(
+          `${endpoints['search']}?kw=${kw}&page=${currentPage}`
+        )
+        setCourseOutlines(res.data[0].data)
+        setEducationPrograms(res.data[1].data)
+        setTotal(
+          res.data[0].total > res.data[1].total
+            ? res.data[0].total
+            : res.data[1].total
+        )
+      } catch (e) {
+        console.error(e)
+      }
     }
     fetchAssigns()
   }, [kw, currentPage])

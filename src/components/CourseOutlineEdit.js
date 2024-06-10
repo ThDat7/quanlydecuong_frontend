@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Form, InputGroup, Table } from 'react-bootstrap'
-import Apis, { endpoints } from '../configs/Apis'
+import Apis, { authApis, endpoints } from '../configs/Apis'
 import { useNavigate, useParams } from 'react-router-dom'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
@@ -39,11 +39,15 @@ const CourseOutlineEdit = () => {
 
   useEffect(() => {
     const fetchCourseOutline = async () => {
-      const res = await Apis.get(endpoints['course-outline'](id))
-      setcourseOutline(res.data)
-      setRichTextContent(res.data.content)
-      setStatus(res.data.status)
-      setCourseAssessments(res.data.courseAssessments)
+      try {
+        const res = await authApis.get(endpoints['course-outline'](id))
+        setcourseOutline(res.data)
+        setRichTextContent(res.data.content)
+        setStatus(res.data.status)
+        setCourseAssessments(res.data.courseAssessments)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     fetchCourseOutline()
@@ -57,7 +61,7 @@ const CourseOutlineEdit = () => {
     }
     const id = courseOutline.id
     try {
-      await Apis.post(endpoints['update-course-outline'](id), data)
+      await authApis.post(endpoints['update-course-outline'](id), data)
       nav(Urls['course-outlines'])
     } catch (error) {
       console.log('Error: ' + error)

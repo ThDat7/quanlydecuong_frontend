@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
 import Pagination from 'react-bootstrap/Pagination'
-import Apis, { endpoints } from '../configs/Apis'
+import Apis, { authApis, endpoints } from '../configs/Apis'
 import Urls from '../configs/Urls'
 import { Link, useSearchParams } from 'react-router-dom'
 import Page from './Pagination'
+import UserContext from '../contexts/UserContext'
+import Cookies from 'js-cookie'
 
 const CourseOutlines = () => {
   const [assigns, setAssigns] = useState([])
@@ -17,15 +19,28 @@ const CourseOutlines = () => {
 
   useEffect(() => {
     const fetchAssigns = async () => {
-      const res = await Apis.get(
-        `${endpoints['course-outlines']}?page=${currentPage}`
-      )
-      setTotal(res.data.total)
-      setAssigns(res.data.data)
+      try {
+        const res = await authApis.get(
+          `${endpoints['course-outlines']}?page=${currentPage}`
+        )
+        setTotal(res.data.total)
+        setAssigns(res.data.data)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     fetchAssigns()
   }, [currentPage])
+
+  if (assigns.length === 0)
+    return (
+      <>
+        <h3 className='text-center mt-3'>
+          Hiện không có đề cương được phân công
+        </h3>
+      </>
+    )
 
   return (
     <>

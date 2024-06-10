@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import Urls from '../configs/Urls'
-import Apis, { endpoints } from '../configs/Apis'
+import Apis, { authApis, endpoints } from '../configs/Apis'
 import debounce from 'lodash.debounce'
 
 const Search = () => {
@@ -21,9 +21,13 @@ const Search = () => {
         setEducationProgramSuggestion([])
         return
       }
-      const res = await Apis.get(`${endpoints['search']}?kw=${kw}`)
-      setCourseOutlineSuggestions(res.data[0].data)
-      setEducationProgramSuggestion(res.data[1].data)
+      try {
+        const res = await authApis.get(`${endpoints['search']}?kw=${kw}`)
+        setCourseOutlineSuggestions(res.data[0].data)
+        setEducationProgramSuggestion(res.data[1].data)
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     fetchSuggestions()
@@ -44,7 +48,7 @@ const Search = () => {
           onChange={(e) => setKw(e.target.value)}
           onFocus={() => setIsSearching(true)}
           onKeyDown={onKeyDown}
-          onBlur={() => setTimeout(() => setIsSearching(false), 100)}
+          onBlur={() => setTimeout(() => setIsSearching(false), 200)}
         />
         <div style={{ position: 'relative' }}>
           {isSearching &&
