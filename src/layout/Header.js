@@ -36,6 +36,10 @@ const Header = () => {
                   </Link>
                 </Nav>
               )}
+              <Link className='nav-link' to={Urls['chat']}>
+                Chats
+              </Link>
+
               <>
                 <Link to={Urls['profile']} className='nav-link text-success'>
                   <Image

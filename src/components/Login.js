@@ -5,6 +5,8 @@ import Urls from '../configs/Urls'
 import Apis, { endpoints } from '../configs/Apis'
 import UserContext from '../contexts/UserContext'
 import Cookies from 'js-cookie'
+import { FirebaseAuth } from '../configs/Firebase'
+import { signInWithCustomToken } from 'firebase/auth'
 
 const Login = () => {
   const [user, dispatch] = useContext(UserContext)
@@ -16,6 +18,8 @@ const Login = () => {
     e.preventDefault()
     try {
       const res = await Apis.post(endpoints['login'], { username, password })
+      await signInWithCustomToken(FirebaseAuth, res.data.firebaseToken)
+
       dispatch({
         type: 'login',
         payload: res.data,
@@ -32,6 +36,7 @@ const Login = () => {
 
   if (user) {
     let next = q.get('next') || '/'
+    if (user.status === 'NEED-INFO') next = Urls['additional-info']
     return <Navigate to={next} />
   }
 

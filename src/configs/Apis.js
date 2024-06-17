@@ -19,6 +19,8 @@ export const endpoints = {
   'teacher-profile': `/api/profile/teacher`,
   'student-profile': `/api/profile/student`,
   login: `/api/login`,
+  'get-chat-users': `/api/users/get-chat-users`,
+  'search-teachers': `/api/users/search-teachers`,
 }
 
 export default axios.create({

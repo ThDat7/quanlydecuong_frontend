@@ -21,6 +21,7 @@ import Cookies from 'js-cookie'
 import AdditionalInfo from './components/AdditionalInfo/AdditionalInfo'
 import Profile from './components/Profile/Profile'
 import Register from './components/Register/Register'
+import ChatApp from './components/ChatApp/ChatApp'
 
 const App = () => {
   let currentUser = null
@@ -106,6 +107,10 @@ const App = () => {
 
               <Route path={`${Urls['profile']}`} element={<PrivateRoute />}>
                 <Route path={`${Urls['profile']}`} element={<Profile />} />
+              </Route>
+
+              <Route path={`${Urls['chat']}`} element={<PrivateRoute />}>
+                <Route path={`${Urls['chat']}`} element={<ChatApp />} />
               </Route>
             </Routes>
           </Container>

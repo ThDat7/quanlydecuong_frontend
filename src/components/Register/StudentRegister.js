@@ -11,7 +11,7 @@ const StudentRegister = ({ majors }) => {
     email: '',
     studentCode: '',
     majorId: null,
-    schoolYear: '',
+    schoolYear: null,
   }
   const formFields = [
     {
@@ -41,8 +41,8 @@ const StudentRegister = ({ majors }) => {
       options: majors,
     },
     {
-      label: 'schoolYear',
-      field: 'Niên khóa',
+      label: 'Niên khóa',
+      field: 'schoolYear',
       type: 'number',
     },
   ]

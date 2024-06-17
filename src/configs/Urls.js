@@ -11,6 +11,7 @@ const Urls = {
   login: '/login/',
   profile: '/profile/',
   forbidden: '/forbidden/',
+  chat: '/chat/',
 }
 
 export default Urls
